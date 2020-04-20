@@ -12,10 +12,12 @@
 FROM registry.fedoraproject.org/fedora-minimal
 
 ARG HUGO_VERSION=0.69.0
+ARG ASCIIDOCTOR_VERSION=2.0.10
+ARG ASCIIDOCTOR_DIAGRAM_VERSION=2.0.2
 
 RUN microdnf -y install wget ruby tar && microdnf clean all
 
-RUN gem install asciidoctor asciidoctor-diagram
+RUN gem install asciidoctor:${ASCIIDOCTOR_VERSION} asciidoctor-diagram:${ASCIIDOCTOR_DIAGRAM_VERSION}
 
 # Downloading latest manually as packages are a bit dated
 RUN mkdir /hugo \
