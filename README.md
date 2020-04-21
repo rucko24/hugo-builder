@@ -14,8 +14,8 @@ Use by running the following from within a Hugo project directory:
 docker run --rm -v $PWD:/src bric3/hugo-builder bash -c 'env PATH=$PWD/bin:$PATH hugo --buildDrafts'
 ```
 
-Or serve the files
+Or serve the files (`--bind=0.0.0.0` is necessary)
 
 ```bash
-docker run --rm --volume $PWD:/src --publish "0.0.0.0:1313:1313" bric3/hugo-builder bash -c 'env PATH=$PWD/bin:$PATH hugo serve --baseUrl=blog.local --buildDrafts'
+docker run --rm --volume $PWD:/src --publish "0.0.0.0:1313:1313" bric3/hugo-builder hugo serve --bind=0.0.0.0 --baseUrl=blog.local --buildDrafts
 ```

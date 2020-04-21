@@ -8,9 +8,9 @@
 #
 # docker run --rm -v $PWD:/src bric3/hugo-builder bash -c 'env PATH=$PWD/bin:$PATH hugo --buildDrafts'
 #
-# Or run the container using these paramters to serve:
+# Or run the container using these parameters to serve bind to 0.0.0.0 is necessary:
 #
-# docker run --rm --volume $PWD:/src --publish "0.0.0.0:1313:1313" bric3/hugo-builder bash -c 'env PATH=$PWD/bin:$PATH hugo serve --baseUrl=blog.local --buildDrafts'
+# docker run --rm --volume $PWD:/src --publish "0.0.0.0:1313:1313" bric3/hugo-builder hugo serve --bind=0.0.0.0 --baseUrl=blog.local --buildDrafts
 
 ###
 FROM registry.fedoraproject.org/fedora-minimal
@@ -36,6 +36,8 @@ RUN mkdir -p /usr/local/hugo \
   && tar xzvf hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz -C /usr/local/hugo/ \
   && ln -s /usr/local/hugo/hugo /usr/local/bin/hugo \
   && rm hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz
+
+ENV PATH="/src/bin:${PATH}"
 
 
 
