@@ -11,7 +11,7 @@ to generate [plantuml](https://plantuml.com) diagrams among others.
 Use by running the following from within a Hugo project directory:
 
 ```bash
-docker run --rm -v $PWD:/src bric3/hugo-builder bash -c 'env PATH=$PWD/bin:$PATH hugo --buildDrafts'
+docker run --rm -v $PWD:/src bric3/hugo-builder hugo --buildDrafts
 ```
 
 Or serve the files (`--bind=0.0.0.0` is necessary)
