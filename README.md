@@ -10,6 +10,12 @@ to generate [plantuml](https://plantuml.com) diagrams among others.
 
 Use by running the following from within a Hugo project directory:
 
+```bash
+docker run --rm -v $PWD:/src bric3/hugo-builder bash -c 'env PATH=$PWD/bin:$PATH hugo --buildDrafts'
 ```
-docker run --rm -v $PWD:/src bric3/hugo-builder bash -c "cd /src && /hugo/hugo"
+
+Or serve the files
+
+```bash
+docker run --rm --volume $PWD:/src --publish "0.0.0.0:1313:1313" bric3/hugo-builder bash -c 'env PATH=$PWD/bin:$PATH hugo serve --baseUrl=blog.local --buildDrafts'
 ```
