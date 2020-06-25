@@ -6,7 +6,7 @@
 #
 # Then run the container using these paramters to generate the files:
 #
-# docker run --rm -v $PWD:/src bric3/hugo-builder bash -c 'env PATH=$PWD/bin:$PATH hugo --buildDrafts'
+# docker run --rm -v $PWD:/src bric3/hugo-builder hugo --buildDrafts
 #
 # Or run the container using these parameters to serve bind to 0.0.0.0 is necessary:
 #
@@ -21,7 +21,7 @@ VOLUME /src
 
 RUN microdnf -y install curl ruby tar java-11-openjdk && microdnf clean all
 
-ARG HUGO_VERSION=0.69.0
+ARG HUGO_VERSION=0.73.0
 ARG ASCIIDOCTOR_VERSION=2.0.10
 ARG ASCIIDOCTOR_DIAGRAM_VERSION=2.0.2
 
