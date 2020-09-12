@@ -13,7 +13,20 @@
 # docker run --rm --volume $PWD:/src --publish "0.0.0.0:1313:1313" bric3/hugo-builder hugo serve --bind=0.0.0.0 --baseUrl=blog.local --buildDrafts
 
 ###
+FROM rust:1.46.0 AS svgbob-builder
+ENV SVGBOB_REV=cefeaab795275afefe0ef017f8ba42c0fc254cdf
+WORKDIR /usr/src/
+
+#RUN rustup target add x86_64-unknown-linux-musl
+
+RUN git clone https://github.com/ivanceras/svgbob \
+  && cd /usr/src/svgbob                           \
+  && git reset --hard $SVGBOB_REV                 \
+  && cargo build --release                        \
+  && ./target/release/svgbob --version
+
 FROM registry.fedoraproject.org/fedora-minimal
+COPY --from=svgbob-builder /usr/src/svgbob/target/release/svgbob /usr/local/bin
 
 EXPOSE 1313
 WORKDIR /src
