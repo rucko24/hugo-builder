@@ -17,8 +17,6 @@ FROM rust:1.46.0 AS svgbob-builder
 ENV SVGBOB_REV=cefeaab795275afefe0ef017f8ba42c0fc254cdf
 WORKDIR /usr/src/
 
-#RUN rustup target add x86_64-unknown-linux-musl
-
 RUN git clone https://github.com/ivanceras/svgbob \
   && cd /usr/src/svgbob                           \
   && git reset --hard $SVGBOB_REV                 \
@@ -34,7 +32,7 @@ VOLUME /src
 
 RUN microdnf -y install curl ruby tar java-11-openjdk && microdnf clean all
 
-ARG HUGO_VERSION=0.73.0
+ARG HUGO_VERSION=0.75.1
 ARG ASCIIDOCTOR_VERSION=2.0.10
 ARG ASCIIDOCTOR_DIAGRAM_VERSION=2.0.3
 
