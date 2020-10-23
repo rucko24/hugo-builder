@@ -34,7 +34,7 @@ RUN microdnf -y install curl ruby tar java-11-openjdk && microdnf clean all
 
 ARG HUGO_VERSION=0.75.1
 ARG ASCIIDOCTOR_VERSION=2.0.10
-ARG ASCIIDOCTOR_DIAGRAM_VERSION=2.0.3
+ARG ASCIIDOCTOR_DIAGRAM_VERSION=2.0.5
 
 RUN gem install --no-document \
   "asciidoctor:${ASCIIDOCTOR_VERSION}" \
