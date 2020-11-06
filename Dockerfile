@@ -14,7 +14,7 @@
 
 ### For svg bob
 FROM rust:1.46.0 AS svgbob-builder
-ENV SVGBOB_REV=cefeaab795275afefe0ef017f8ba42c0fc254cdf
+ENV SVGBOB_REV=a2c13a56e1fbd2a458c90bbb97bb858adc20a5ce
 WORKDIR /usr/src/
 
 RUN git clone https://github.com/ivanceras/svgbob \
