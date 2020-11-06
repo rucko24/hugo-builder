@@ -12,7 +12,7 @@
 #
 # docker run --rm --volume $PWD:/src --publish "0.0.0.0:1313:1313" bric3/hugo-builder hugo serve --bind=0.0.0.0 --baseUrl=blog.local --buildDrafts
 
-###
+### For svg bob
 FROM rust:1.46.0 AS svgbob-builder
 ENV SVGBOB_REV=cefeaab795275afefe0ef017f8ba42c0fc254cdf
 WORKDIR /usr/src/
@@ -23,23 +23,10 @@ RUN git clone https://github.com/ivanceras/svgbob \
   && cargo build --release                        \
   && ./target/release/svgbob --version
 
-FROM registry.fedoraproject.org/fedora-minimal
-COPY --from=svgbob-builder /usr/src/svgbob/target/release/svgbob /usr/local/bin
-
-EXPOSE 1313
-WORKDIR /src
-VOLUME /src
-
-RUN microdnf -y install curl ruby tar java-11-openjdk && microdnf clean all
-
+### Download and extract hugo
+FROM registry.fedoraproject.org/fedora-minimal as hugo-downloader
+RUN microdnf -y install curl ruby tar && microdnf clean all
 ARG HUGO_VERSION=0.75.1
-ARG ASCIIDOCTOR_VERSION=2.0.10
-ARG ASCIIDOCTOR_DIAGRAM_VERSION=2.0.5
-
-RUN gem install --no-document \
-  "asciidoctor:${ASCIIDOCTOR_VERSION}" \
-  "asciidoctor-diagram:${ASCIIDOCTOR_DIAGRAM_VERSION}"
-
 
 # Downloading latest manually as packages are a bit dated
 RUN mkdir -p /usr/local/hugo \
@@ -47,6 +34,27 @@ RUN mkdir -p /usr/local/hugo \
   && tar xzvf hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz -C /usr/local/hugo/ \
   && ln -s /usr/local/hugo/hugo /usr/local/bin/hugo \
   && rm hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz
+
+
+# Final
+FROM registry.fedoraproject.org/fedora-minimal
+COPY --from=svgbob-builder /usr/src/svgbob/target/release/svgbob /usr/local/bin
+COPY --from=hugo-downloader /usr/local/hugo/hugo /usr/local/bin
+
+EXPOSE 1313
+WORKDIR /src
+VOLUME /src
+
+RUN microdnf -y install ruby java-11-openjdk && microdnf clean all
+
+ARG ASCIIDOCTOR_VERSION=2.0.10
+ARG ASCIIDOCTOR_DIAGRAM_VERSION=2.0.5
+
+# It seems that installing asciidoctor-diagram always upgrades
+# to the latest version of asciidoctor, so I install it in a separate command
+# that ignore dependencies since asciidoctor is the only dependency (https://rubygems.org/gems/asciidoctor-diagram)
+RUN gem install --no-document "asciidoctor:${ASCIIDOCTOR_VERSION}" \
+  && gem install --no-document --ignore-dependencies "asciidoctor-diagram:${ASCIIDOCTOR_DIAGRAM_VERSION}"
 
 ENV PATH="/src/bin:${PATH}"
 
