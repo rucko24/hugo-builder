@@ -47,7 +47,7 @@ VOLUME /src
 
 RUN microdnf -y install ruby java-11-openjdk && microdnf clean all
 
-ARG ASCIIDOCTOR_VERSION=2.0.10
+ARG ASCIIDOCTOR_VERSION=2.0.12
 ARG ASCIIDOCTOR_DIAGRAM_VERSION=2.0.5
 
 # It seems that installing asciidoctor-diagram always upgrades
