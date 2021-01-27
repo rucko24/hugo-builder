@@ -38,8 +38,6 @@ RUN mkdir -p /usr/local/hugo \
 
 # Final
 FROM registry.fedoraproject.org/fedora-minimal
-COPY --from=svgbob-builder /usr/src/svgbob/target/release/svgbob /usr/local/bin
-COPY --from=hugo-downloader /usr/local/hugo/hugo /usr/local/bin
 
 EXPOSE 1313
 WORKDIR /src
@@ -48,13 +46,21 @@ VOLUME /src
 RUN microdnf -y install ruby java-11-openjdk && microdnf clean all
 
 ARG ASCIIDOCTOR_VERSION=2.0.12
-ARG ASCIIDOCTOR_DIAGRAM_VERSION=2.0.5
+ARG ASCIIDOCTOR_DIAGRAM_VERSION=2.1.0
+ARG ASCIIDOCTOR_DIAGRAM_DITAA_VERSION=0.13.1
+ARG ASCIIDOCTOR_DIAGRAM_PLANTUML_VERSION=1.2021.0
 
 # It seems that installing asciidoctor-diagram always upgrades
 # to the latest version of asciidoctor, so I install it in a separate command
 # that ignore dependencies since asciidoctor is the only dependency (https://rubygems.org/gems/asciidoctor-diagram)
 RUN gem install --no-document "asciidoctor:${ASCIIDOCTOR_VERSION}" \
-  && gem install --no-document --ignore-dependencies "asciidoctor-diagram:${ASCIIDOCTOR_DIAGRAM_VERSION}"
+  && gem install --no-document --ignore-dependencies "asciidoctor-diagram:${ASCIIDOCTOR_DIAGRAM_VERSION}" \
+  && gem install --no-document --ignore-dependencies "asciidoctor-diagram-ditaamini:${ASCIIDOCTOR_DIAGRAM_DITAA_VERSION}" \
+  && gem install --no-document --ignore-dependencies "asciidoctor-diagram-plantuml:${ASCIIDOCTOR_DIAGRAM_PLANTUML_VERSION}"
+
+COPY --from=svgbob-builder /usr/src/svgbob/target/release/svgbob /usr/local/bin
+COPY --from=hugo-downloader /usr/local/hugo/hugo /usr/local/bin
+
 
 ENV PATH="/src/bin:${PATH}"
 
