@@ -26,7 +26,7 @@ RUN git clone https://github.com/ivanceras/svgbob \
 ### Download and extract hugo
 FROM registry.fedoraproject.org/fedora-minimal as hugo-downloader
 RUN microdnf -y install curl ruby tar && microdnf clean all
-ARG HUGO_VERSION=0.75.1
+ARG HUGO_VERSION=0.80.0
 
 # Downloading latest manually as packages are a bit dated
 RUN mkdir -p /usr/local/hugo \
