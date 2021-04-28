@@ -26,7 +26,7 @@ RUN git clone https://github.com/ivanceras/svgbob \
 ### Download and extract hugo
 FROM registry.fedoraproject.org/fedora-minimal as hugo-downloader
 RUN microdnf -y install curl ruby tar && microdnf clean all
-ARG HUGO_VERSION=0.80.0
+ARG HUGO_VERSION=0.82.1
 
 # Downloading latest manually as packages are a bit dated
 RUN mkdir -p /usr/local/hugo \
@@ -45,10 +45,10 @@ VOLUME /src
 
 RUN microdnf -y install ruby java-11-openjdk && microdnf clean all
 
-ARG ASCIIDOCTOR_VERSION=2.0.12
-ARG ASCIIDOCTOR_DIAGRAM_VERSION=2.1.0
-ARG ASCIIDOCTOR_DIAGRAM_DITAA_VERSION=0.13.1
-ARG ASCIIDOCTOR_DIAGRAM_PLANTUML_VERSION=1.2021.0
+ARG ASCIIDOCTOR_VERSION=2.0.14
+ARG ASCIIDOCTOR_DIAGRAM_VERSION=2.1.2
+ARG ASCIIDOCTOR_DIAGRAM_DITAA_VERSION=1.0.0
+ARG ASCIIDOCTOR_DIAGRAM_PLANTUML_VERSION=1.2021.2
 
 # It seems that installing asciidoctor-diagram always upgrades
 # to the latest version of asciidoctor, so I install it in a separate command
