@@ -29,7 +29,9 @@ RUN microdnf -y install curl ruby tar && microdnf clean all
 ARG HUGO_VERSION=0.82.1
 
 # Downloading latest manually as packages are a bit dated
+# Get latest Hugo version dynamically
 RUN mkdir -p /usr/local/hugo \
+  && HUGO_VERSION=$(curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | grep '"tag_name"' | cut -d '"' -f 4 | sed 's/v//') \
   && curl -LO https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz \
   && tar xzvf hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz -C /usr/local/hugo/ \
   && ln -s /usr/local/hugo/hugo /usr/local/bin/hugo \
