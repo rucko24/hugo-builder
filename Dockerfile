@@ -15,7 +15,7 @@
 ### Download and extract hugo
 FROM registry.fedoraproject.org/fedora-minimal AS hugo-downloader
 RUN microdnf -y install curl ruby tar gzip && microdnf clean all
-ARG HUGO_VERSION=0.143.0
+ARG HUGO_VERSION=0.150.1
 
 # Downloading latest manually as packages are a bit dated
 RUN mkdir -p /usr/local/hugo \
